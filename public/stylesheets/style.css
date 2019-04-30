@@ -1,0 +1,33 @@
+body {
+  padding: 2%;
+  font-family:
+      "ヒラギノ角ゴ Pro W3",
+      "Hiragino Kaku Gothic Pro",
+      "メイリオ", "Meiryo",
+      "Osaka",
+      "ＭＳ Ｐゴシック",
+      "MS PGothic",
+      "sans-serif";
+  font-size: 12px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+td, th {
+  vertical-align: middle;
+}
+.box-body{
+  background: #FCFCFC;
+  border: 1px solid #ddd;
+  padding: 2%;
+  width: 65%;
+  margin: auto;
+  height: auto;
+}
+.title{
+  font-size: 14px;    /*フォントサイズの指定*/
+  font-weight:bolder;
+  color: #313131; /*文字色の変更*/
+}
