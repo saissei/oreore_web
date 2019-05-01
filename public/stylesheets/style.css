@@ -65,3 +65,7 @@ table {
 #has-error {
   display: none;
 }
+#error-message {
+  font-size: 14px; /*フォントサイズの指定*/
+  font-weight: bolder;
+}

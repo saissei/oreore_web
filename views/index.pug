@@ -9,7 +9,7 @@ block content
       .row
         .box-body.form-box
           h3 送金
-        form.box-body
+        form#send-coin.box-body
           .col-12.space-top.clearfix
             .float-left.left-width
               .title From:
@@ -40,7 +40,7 @@ block content
 
         #has-error.box-body.error-box
           h3 Error
-          .text-center 送金処理時にエラーが発生しました。ログを確認して下さい。
+          #error-message.text-center
 
 
   //- template area
@@ -70,51 +70,5 @@ block content
 
 
   //- script area
-  script.
-    $(document).ready(function(){
-      const $from_list = $.templates("#from_tmpl");
-      const $to_list = $.templates("#to_tmpl");
-      axios.get('/api/accounts')
-      .then(item => {
-        let accounts = item.data.accounts;
-        accounts = accounts.map(_ac => ({id: _ac}))
-        $("#from_list").append($("#opt-tmpl").render(accounts));
-        $("#to_list").append($("#opt-tmpl").render(accounts));
-      })
-    })
-
-
-    $('form input:required').on('change', function(){
-      let flag = true;
-        $('form input:required').each(function(e) {
-          if ($('form input:required').eq(e).val() === "") {
-            flag = false;
-          }
-        });
-        if (flag) {
-          $('.send').prop("disabled", false);
-        }
-        else {
-          $('.send').prop("disabled", true);
-        }
-    });
-
-    $('.send').on('click', function(){
-      const _from = $('#from_list').val()
-      const _to = $('#to_list').val()
-      const _value = $('#value').val()
-      axios.post('/api/send-coin', { from: _from, to: _to, value: _value })
-      .then(resp => {
-        $('#report').empty();
-        $("#report").append($("#report_tmpl").render(resp.data));
-        $('#detail').show('slow');
-      })
-      .catch(err => {
-        console.error(err)
-        $('#has-error').show('slow');
-      })
-    })
-
-    $('.detail').on('click', function(){
-      $('#summery').show();
-    })
+  script(src='../javascripts/required_check.js')
+  script(src='../javascripts/send_action.js')
