@@ -28,7 +28,7 @@ router.post('/send-coin', async (req, res, next) => {
         .getTransaction(transactionHash)
         .then(async blockNum => {
           let from_coin = await geth.OreBalance(body.from)
-          let to_coin = await geth.OreBalance(body.from)
+          let to_coin = await geth.OreBalance(body.to)
 
           from_coin = parseInt(from_coin._hex.replace(/^0x/, ''), 16)
           to_coin = parseInt(to_coin._hex.replace(/^0x/, ''), 16)
@@ -40,7 +40,6 @@ router.post('/send-coin', async (req, res, next) => {
             send_coin: body.value,
             to_coin: to_coin
           }
-          console.log(data)
           res
             .status(200)
             .header('Content-Type', 'application/json; charset=utf-8')

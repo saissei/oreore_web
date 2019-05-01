@@ -1,90 +1,83 @@
 extends layout
 
 block content
-  .content-header(style='padding-bottom: 15px')
-    h1(style='border-bottom: solid 2px orange;')= title
+  .content-header
+    h1.page-title= title
     p Welcome to #{title}
   .content
     .container
       .row
-        .box-body(style='background: #FFF;border: #FFF')
+        .box-body.form-box
           h3 送金
-        form.box-body(action="")
-          .col-12.clearfix(style='padding-top:1%')
-            .float-left(style='width: 34%;')
-              label.title.d-flex.align-items-center From:
-            .float-right(style='width: 64%;')
+        form.box-body
+          .col-12.space-top.clearfix
+            .float-left.left-width
+              .title From:
+            .float-right.right-width
               select.form-control.from-address(id='from_list' placeholder='' name="_from" required)
-              script(id="from_tmpl" type="text/x-jsrender")
-                option {{:id}}
-          .col-12.clearfix(style='padding-top:1%')
-            .float-left(style='width: 34%;')
-              label.title.d-flex.align-items-center To:
-            .float-right(style='width: 64%;')
+
+          .col-12.space-top.clearfix
+            .float-left.left-width
+              .title To:
+            .float-right.right-width
               select.form-control.from-address(id='to_list' placeholder='' name="_to" required)
-              script(id="to_tmpl" type="text/x-jsrender")
-                option {{:id}}
-          .col-12.clearfix(style='padding-top:1%')
-            .float-left(style='width: 34%;')
-              label.title.d-flex.align-items-center Send Coins:
-            .float-right(style='width: 64%;')
-              input.form-control.send-value(placeholder='' type="number" name='_value' required)
 
-          .col-12.clearfix(style='padding-top:2%')
-            button.btn.btn-sm.btn-outline-success.float-right.send(type='button' disabled) Send
+          .col-12.space-top.clearfix
+            .float-left.left-width
+              .title Send Coins:
+            .float-right.right-width
+              input.form-control.send-value(id="value" placeholder='' type="number" name='_value' required)
+
+          .col-12.space-top.clearfix
+              button.btn.btn-sm.btn-outline-success.float-right.send(type='button' disabled) Send
 
 
-        .box-body(style="margin-top: 2%; background: #E7FFED;display:none"  id="detail")
-          .float-left
-            p(style='font-size:14px') Result
+        #detail.box-body.result-box
+          h3 Result
           .col-12
-            .mx-auto(style='text-align:center')
-              table#report.table.table-bordered(style='background: #FFF')
-              script(id="report_tmpl" type="text/x-jsrender")
-                thead
-                  th 項目
-                  th 詳細
-                tbody
-                  tr
-                    td transactionHash
-                    td {{:transactionHash}}
-                  tr
-                    td 送金元アドレス
-                    td {{:from}}
-                  tr
-                    td 送金元残高
-                    td {{:from_coin}}
-                  tr
-                    td 送金先アドレス
-                    td {{:to}}
-                  tr
-                    td 送金先残高
-                    td {{:to_coin}}
+            .mx-auto.text-center
+              table#report.table.table-bordered
 
 
+  //- template area
+  script(id="opt-tmpl" type="text/x-jsrender")
+    option {{:id}}
+
+  script(id="report_tmpl" type="text/x-jsrender")
+    thead
+      th 項目
+      th 詳細
+    tbody
+      tr
+        td transactionHash
+        td {{:transactionHash}}
+      tr
+        td 送金元アドレス
+        td {{:from}}
+      tr
+        td 送金元残高
+        td {{:from_coin}}
+      tr
+        td 送金先アドレス
+        td {{:to}}
+      tr
+        td 送金先残高
+        td {{:to_coin}}
 
 
+  //- script area
   script.
     $(document).ready(function(){
-      $from_list = $.templates("#from_tmpl");
-      $to_list = $.templates("#to_tmpl");
+      const $from_list = $.templates("#from_tmpl");
+      const $to_list = $.templates("#to_tmpl");
       axios.get('/api/accounts')
       .then(item => {
         let accounts = item.data.accounts;
         accounts = accounts.map(_ac => ({id: _ac}))
-        $("#from_list").append($("#from_tmpl").render(accounts));
-        $("#to_list").append($("#to_tmpl").render(accounts));
+        $("#from_list").append($("#opt-tmpl").render(accounts));
+        $("#to_list").append($("#opt-tmpl").render(accounts));
       })
     })
-
-
-    function parseJson(data) {
-      var returnJson = {};
-      for (idx = 0; idx < data.length; idx++) {
-        returnJson[data[idx].name] = data[idx].value
-      }
-      return returnJson;
-    };
 
 
     $('form input:required').on('change', function(){
@@ -103,14 +96,18 @@ block content
     });
 
     $('.send').on('click', function(){
-      $form = $(this).parents('form:first');
-      const _data = parseJson($form.serializeArray());
-      axios.post('/api/send-coin', { from: _data._from, to: _data._to, value: _data._value })
+      const _from = $('#from_list').val()
+      const _to = $('#to_list').val()
+      const _value = $('#value').val()
+      axios.post('/api/send-coin', { from: _from, to: _to, value: _value })
       .then(resp => {
         console.log(resp)
         $('#report').empty();
         $("#report").append($("#report_tmpl").render(resp.data));
         $('#detail').show('slow');
+      })
+      .catch(err => {
+        console.error(err)
       })
     })
 

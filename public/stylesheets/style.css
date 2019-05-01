@@ -25,4 +25,35 @@ th {
   font-size: 14px; /*フォントサイズの指定*/
   font-weight: bolder;
   color: #313131; /*文字色の変更*/
+  text-align: center;
+}
+.left-width {
+  width: 34%;
+}
+.right-width {
+  width: 64%;
+}
+.space-top {
+  padding-top: 1%;
+}
+.space-bottom {
+  padding-bottom: 15px;
+}
+.form-box {
+  background: #fff;
+  border: #fff;
+}
+.result-box {
+  margin-top: 2%;
+  background: #e7ffed;
+  display: none;
+}
+.text-center {
+  text-align: center;
+}
+.page-title {
+  border-bottom: solid 2px orange;
+}
+table {
+  background: #fff;
 }
