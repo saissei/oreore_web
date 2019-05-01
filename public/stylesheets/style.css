@@ -57,3 +57,11 @@ th {
 table {
   background: #fff;
 }
+.error-box {
+  margin-top: 2%;
+  background: #ffe7f4;
+}
+#detail,
+#has-error {
+  display: none;
+}

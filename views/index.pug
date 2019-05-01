@@ -38,6 +38,10 @@ block content
             .mx-auto.text-center
               table#report.table.table-bordered
 
+        #has-error.box-body.error-box
+          h3 Error
+          .text-center 送金処理時にエラーが発生しました。ログを確認して下さい。
+
 
   //- template area
   script(id="opt-tmpl" type="text/x-jsrender")
@@ -101,13 +105,13 @@ block content
       const _value = $('#value').val()
       axios.post('/api/send-coin', { from: _from, to: _to, value: _value })
       .then(resp => {
-        console.log(resp)
         $('#report').empty();
         $("#report").append($("#report_tmpl").render(resp.data));
         $('#detail').show('slow');
       })
       .catch(err => {
         console.error(err)
+        $('#has-error').show('slow');
       })
     })
 
