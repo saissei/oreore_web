@@ -40,14 +40,14 @@ block content
 
         #has-error.box-body.error-box
           h3 Error
-          #error-message.text-center
+          ul#error-message
 
 
   //- template area
   script(id="opt-tmpl" type="text/x-jsrender")
     option {{:id}}
 
-  script(id="report_tmpl" type="text/x-jsrender")
+  script(id="report-tmpl" type="text/x-jsrender")
     thead
       th 項目
       th 詳細
@@ -67,6 +67,9 @@ block content
       tr
         td 送金先残高
         td {{:to_coin}}
+
+  script(id="error-tmpl" type="text/x-jsrender")
+    li {{:message}}
 
 
   //- script area

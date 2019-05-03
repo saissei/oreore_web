@@ -7,7 +7,7 @@ $(function() {
       .post('/api/send-coin', { from: _from, to: _to, value: _value })
       .then(resp => {
         $('#report').empty()
-        $('#report').append($('#report_tmpl').render(resp.data))
+        $('#report').append($('#report-tmpl').render(resp.data))
         $('#detail').show('slow')
       })
       .catch(err => {

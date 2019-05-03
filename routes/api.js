@@ -10,8 +10,8 @@ router.get('/', function(req, res, next) {
     .json({ status: 'success' })
 })
 
-router.get('/accounts', function(req, res, next) {
-  geth.getAccounts().then(function(_account) {
+router.get('/accounts', (req, res, next) => {
+  geth.getAccounts().then(_account => {
     res
       .status(200)
       .header('Content-Type', 'application/json; charset=utf-8')
@@ -62,7 +62,7 @@ router.post('/send-coin', async (req, res, next) => {
     })
 })
 
-router.get('/balance/:id', function(req, res, next) {
+router.get('/balance/:id', (req, res, next) => {
   const from = req.params.id
   geth.OreBalance(from).then(resp => {
     const coin = parseInt(resp._hex.replace(/^0x/, ''), 16)
