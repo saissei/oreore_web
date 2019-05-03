@@ -6,7 +6,6 @@ const logger = require('morgan')
 
 const indexRouter = require('./routes/index')
 const apiRouter = require('./routes/api')
-const usersRouter = require('./routes/users')
 const fs = require('fs-extra')
 const rfs = require('rotating-file-stream')
 
@@ -40,7 +39,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'node_modules')))
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
 app.use('/api', apiRouter)
 app.use(logger('short', { stream: accessLogStream }))
 
