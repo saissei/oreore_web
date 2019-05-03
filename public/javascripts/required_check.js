@@ -6,7 +6,7 @@ $(function() {
     const value = $('#value').val()
 
     /** required未入力、その他不正時の出力エラー配列 */
-    let errors = []
+    const errors = []
 
     /** 送金元未選択時 */
     if (!from) {
