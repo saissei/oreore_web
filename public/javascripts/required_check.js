@@ -27,7 +27,6 @@ $(function() {
     if (!value) {
       errors.push({ message: '送金額を入力してください' })
     }
-    console.log(errors)
 
     /**
      * - 全て選択済み、入力済み時, sendボタン有効化
