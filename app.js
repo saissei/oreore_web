@@ -15,22 +15,6 @@ const app = express()
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
-// set log
-const logDirectory = path.join(__dirname, './log')
-fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
-logger.token('custom_token', function getId(req) {
-  const return_log =
-    'first:' + req.body['first'] + '\t second:' + req.body['second']
-  return return_log
-})
-// log rotate settings
-const accessLogStream = rfs('access.log', {
-  size: '10MB',
-  interval: '1d',
-  compress: 'gzip',
-  path: logDirectory
-})
-
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
