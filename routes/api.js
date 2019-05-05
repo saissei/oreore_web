@@ -3,7 +3,7 @@ const router = express.Router()
 const geth = require('../lib/connect_geth')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   res
     .status(200)
     .header('Content-Type', 'application/json; charset=utf-8')
@@ -21,37 +21,27 @@ router.get('/accounts', (req, res, next) => {
 
 router.post('/send-coin', async (req, res, next) => {
   const body = req.body
+  const transactionHash = await geth.oreTransfer(body.from, body.to, body.value)
   geth
-    .oreTransfer(body.from, body.to, body.value)
-    .then(async transactionHash => {
-      geth
-        .getTransaction(transactionHash)
-        .then(async blockNum => {
-          let from_coin = await geth.OreBalance(body.from)
-          let to_coin = await geth.OreBalance(body.to)
+    .getTransaction(transactionHash)
+    .then(async blockNum => {
+      let from_coin = await geth.OreBalance(body.from)
+      let to_coin = await geth.OreBalance(body.to)
 
-          from_coin = parseInt(from_coin._hex.replace(/^0x/, ''), 16)
-          to_coin = parseInt(to_coin._hex.replace(/^0x/, ''), 16)
-          const data = {
-            transactionHash: transactionHash,
-            from: body.from,
-            to: body.to,
-            from_coin: from_coin,
-            send_coin: body.value,
-            to_coin: to_coin
-          }
-          res
-            .status(200)
-            .header('Content-Type', 'application/json; charset=utf-8')
-            .json(data)
-        })
-        .catch(err => {
-          console.error(err)
-          res
-            .status(400)
-            .header('Content-Type', 'application/json; charset=utf-8')
-            .json({ status: 'send error' })
-        })
+      from_coin = parseInt(from_coin._hex.replace(/^0x/, ''), 16)
+      to_coin = parseInt(to_coin._hex.replace(/^0x/, ''), 16)
+      const data = {
+        transactionHash: transactionHash,
+        from: body.from,
+        to: body.to,
+        from_coin: from_coin,
+        send_coin: body.value,
+        to_coin: to_coin
+      }
+      res
+        .status(200)
+        .header('Content-Type', 'application/json; charset=utf-8')
+        .json(data)
     })
     .catch(err => {
       console.error(err)
