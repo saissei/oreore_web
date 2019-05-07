@@ -1,5 +1,6 @@
 $(function() {
   $('.send').on('click', function() {
+    $('.send').prop('disabled', true)
     const _from = $('#from_list').val()
     const _to = $('#to_list').val()
     const _value = $('#value').val()
@@ -8,13 +9,13 @@ $(function() {
       .then(resp => {
         $('#report').empty()
         $('#report').append($('#report-tmpl').render(resp.data))
-        $('#detail').show('slow')
+        $('#detail').show()
+        $('.send').prop('disabled', false)
       })
       .catch(err => {
-        $('#error-message').text(
-          '送金処理時にエラーが発生しました。ログを確認して下さい。'
-        )
-        $('#has-error').show('slow')
+        $('#error-message').text('送金処理時にエラーが発生しました。')
+        $('#has-error').show()
+        $('.send').prop('disabled', false)
       })
   })
 
